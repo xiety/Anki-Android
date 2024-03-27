@@ -206,7 +206,7 @@ class DeckAdapter(private val layoutInflater: LayoutInflater, context: Context) 
         holder.deckNew.setTextColor(if (node.newCount == 0) zeroCountColor else newCountColor)
         holder.deckLearn.text = node.lrnCount.toString()
         holder.deckLearn.setTextColor(if (node.lrnCount == 0) zeroCountColor else learnCountColor)
-        holder.deckRev.text = node.revCount.toString()
+        holder.deckRev.text = if (node.revRemain > 0) "${node.revCount} (${node.revRemain})" else node.revCount.toString()
         holder.deckRev.setTextColor(if (node.revCount == 0) zeroCountColor else reviewCountColor)
 
         // Store deck ID in layout's tag for easy retrieval in our click listeners

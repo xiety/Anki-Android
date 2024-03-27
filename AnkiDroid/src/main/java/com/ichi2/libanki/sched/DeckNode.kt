@@ -28,6 +28,7 @@ data class DeckNode(
 ) {
     var collapsed = node.collapsed
     val revCount = node.reviewCount
+    val revRemain = 0.coerceAtLeast(node.reviewUncapped - node.reviewCount)
     val newCount = node.newCount
     val lrnCount = node.learnCount
     val did = node.deckId
