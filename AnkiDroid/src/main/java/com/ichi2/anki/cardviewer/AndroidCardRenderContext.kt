@@ -52,7 +52,7 @@ class AndroidCardRenderContext(
         // produces either an <input> or <span>...</span> to denote typed input
         content = filterTypeAnswer(content, side)
         // wraps content in <div id="qa">
-        content = enrichWithQADiv(content)
+        content = enrichWithQADiv(content, card)
         // expands [anki:q:1] to a play button
         content = expandSounds(content)
         // fixes an Android bug where font-weight:600 does not display
@@ -86,7 +86,17 @@ class AndroidCardRenderContext(
      * @param content The content to surround with tags.
      * @return The enriched content
      */
-    private fun enrichWithQADiv(content: String) = buildString {
+    private fun enrichWithQADiv(content: String, card: Card) = buildString {
+        val cls = when (card.type) {
+            Consts.CARD_TYPE_NEW -> "card-type-new"
+            Consts.CARD_TYPE_LRN -> "card-type-lrn"
+            Consts.CARD_TYPE_REV -> "card-type-rev"
+            Consts.CARD_TYPE_RELEARNING -> "card-type-relearning"
+            else -> ""
+        }
+
+        append("""<div id="qa_title" class="$cls"></div>""")
+
         append("""<div id="qa">""")
         append(content)
         append("</div>")
