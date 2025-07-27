@@ -88,10 +88,10 @@ class AnkiDroidCrashReportDialog :
                 preferences.edit {
                     putString(
                         CrashReportService.FEEDBACK_REPORT_KEY,
-                        CrashReportService.FEEDBACK_REPORT_ALWAYS,
+                        CrashReportService.FEEDBACK_REPORT_NEVER,
                     )
                 }
-                CrashReportService.setAcraReportingMode(CrashReportService.FEEDBACK_REPORT_ALWAYS)
+                CrashReportService.setAcraReportingMode(CrashReportService.FEEDBACK_REPORT_NEVER)
             }
             // Send the crash report
             helper!!.sendCrash(binding.userComment.text.toString(), "")

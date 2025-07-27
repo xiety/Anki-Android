@@ -59,18 +59,18 @@ abstract class SettingsFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        if (key !in UsageAnalytics.preferencesWhoseChangesShouldBeReported) {
-            return
-        }
-        if (key != null) {
-            val valueToReport = getPreferenceReportableValue(sharedPreferences.get(key))
-            UsageAnalytics.sendAnalyticsEvent(
-                category = UsageAnalytics.Category.SETTING,
-                action = UsageAnalytics.Actions.CHANGED_SETTING,
-                value = valueToReport,
-                label = key,
-            )
-        }
+        // if (key !in UsageAnalytics.preferencesWhoseChangesShouldBeReported) {
+        //    return
+        // }
+        // if (key != null) {
+        //    val valueToReport = getPreferenceReportableValue(sharedPreferences.get(key))
+        //    UsageAnalytics.sendAnalyticsEvent(
+        //        category = UsageAnalytics.Category.SETTING,
+        //        action = UsageAnalytics.Actions.CHANGED_SETTING,
+        //        value = valueToReport,
+        //        label = key,
+        //    )
+        // }
     }
 
     override fun onCreateView(
