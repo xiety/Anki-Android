@@ -168,13 +168,14 @@ class DeckAdapter(
         binding.deckName.text = node.lastDeckNameComponent
         binding.deckName.setTextColor(if (node.filtered) deckNameDynColor else deckNameDefaultColor)
 
+        val grayedOut = (node.canCollapse && !node.collapsed)
         // Set the card counts and their colors
         binding.deckNew.text = node.newCount.toString()
-        binding.deckNew.setTextColor(if (node.newCount == 0) zeroCountColor else newCountColor)
+        binding.deckNew.setTextColor(if (node.newCount == 0 || grayedOut) zeroCountColor else newCountColor)
         binding.deckLearn.text = node.lrnCount.toString()
-        binding.deckLearn.setTextColor(if (node.lrnCount == 0) zeroCountColor else learnCountColor)
-        binding.deckReview.text = node.revCount.toString()
-        binding.deckReview.setTextColor(if (node.revCount == 0) zeroCountColor else reviewCountColor)
+        binding.deckLearn.setTextColor(if (node.lrnCount == 0 || grayedOut) zeroCountColor else learnCountColor)
+        binding.deckReview.text = if (node.revRemain > 0) "${node.revCount} (${node.revRemain})" else node.revCount.toString()
+        binding.deckReview.setTextColor(if ((node.revCount == 0 && node.revRemain == 0) || grayedOut) zeroCountColor else reviewCountColor)
 
         holder.binding.deckLayout.setOnClickListener { onDeckSelected(node.did) }
         holder.binding.deckLayout.setOnLongClickListener {
