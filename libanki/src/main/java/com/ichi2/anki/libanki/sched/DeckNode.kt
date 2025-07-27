@@ -54,6 +54,8 @@ data class DeckNode(
      */
     val newCount = node.newCount
 
+    val revRemain = 0.coerceAtLeast(node.reviewUncapped - node.reviewCount)
+
     /**
      * Number of cards in learning to review today, as displayed in the deck picker, including count of subdecks.
      * Note that this value will quite often be smaller than the value that would be returned by the back-end. This is because a card in learning may be due at any second.
