@@ -240,7 +240,7 @@ object CrashReportService {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun setProductionACRAConfig(prefs: SharedPreferences) {
         // Enable or disable crash reporting based on user setting
-        setAcraReportingMode(prefs.getString(FEEDBACK_REPORT_KEY, FEEDBACK_REPORT_ASK)!!)
+        setAcraReportingMode(prefs.getString(FEEDBACK_REPORT_KEY, FEEDBACK_REPORT_NEVER)!!)
     }
 
     private fun fetchWebViewInformation(): HashMap<String, String> {
@@ -279,7 +279,7 @@ object CrashReportService {
         val reportMode =
             context
                 .sharedPrefs()
-                .getString(FEEDBACK_REPORT_KEY, FEEDBACK_REPORT_ASK)
+                .getString(FEEDBACK_REPORT_KEY, FEEDBACK_REPORT_NEVER)
         if (onlyIfSilent) {
             if (FEEDBACK_REPORT_ALWAYS != reportMode) {
                 Timber.i("sendExceptionReport - onlyIfSilent true, but ACRA is not 'always accept'. Skipping report send.")

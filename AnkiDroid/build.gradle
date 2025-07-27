@@ -59,14 +59,14 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ichi2.anki"
+        applicationId = "com.xiety.anki"
         buildConfigField "Boolean", "CI", (System.getenv("CI") == "true").toString()
-        buildConfigField "String", "ACRA_URL", '"https://ankidroid.org/acra/report"'
+        buildConfigField "String", "ACRA_URL", '""'
         buildConfigField "String", "BACKEND_VERSION", "\"${libs.versions.ankiBackend.get()}\""
         buildConfigField "Boolean", "ENABLE_LEAK_CANARY", "false"
         buildConfigField "String", "GIT_COMMIT_HASH", "\"${gitCommitHash()}\""
         buildConfigField "long", "BUILD_TIME", System.currentTimeMillis().toString()
-        resValue "string", "app_name", "AnkiDroid"
+        resValue "string", "app_name", "AnkiDroidMod"
 
         // The version number is of the form:
         // <major>.<minor>.<maintenance>[dev|alpha<build>|beta<build>|]
