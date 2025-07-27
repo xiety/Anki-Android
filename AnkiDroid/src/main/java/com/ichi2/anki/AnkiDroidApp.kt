@@ -35,7 +35,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import anki.collection.OpChanges
 import com.ichi2.anki.CrashReportService.sendExceptionReport
-import com.ichi2.anki.analytics.UsageAnalytics
 import com.ichi2.anki.browser.SharedPreferencesLastDeckIdRepository
 import com.ichi2.anki.common.annotations.NeedsTest
 import com.ichi2.anki.common.utils.annotation.KotlinCleanup
@@ -45,7 +44,6 @@ import com.ichi2.anki.contextmenu.CardBrowserContextMenu
 import com.ichi2.anki.exception.StorageAccessException
 import com.ichi2.anki.logging.FragmentLifecycleLogger
 import com.ichi2.anki.logging.LogType
-import com.ichi2.anki.logging.ProductionCrashReportingTree
 import com.ichi2.anki.logging.RobolectricDebugTree
 import com.ichi2.anki.observability.ChangeManager
 import com.ichi2.anki.preferences.SharedPreferencesProvider
@@ -127,7 +125,17 @@ open class AnkiDroidApp :
         when (logType) {
             LogType.DEBUG -> Timber.plant(DebugTree())
             LogType.ROBOLECTRIC -> Timber.plant(RobolectricDebugTree())
-            LogType.PRODUCTION -> Timber.plant(ProductionCrashReportingTree())
+            LogType.PRODUCTION ->
+                Timber.plant(
+                    object : Timber.Tree() {
+                        override fun log(
+                            priority: Int,
+                            tag: String?,
+                            message: String,
+                            t: Throwable?,
+                        ) { /* no-op */ }
+                    },
+                )
         }
         if (BuildConfig.ENABLE_LEAK_CANARY) {
             LeakCanaryConfiguration.setInitialConfigFor(this)
@@ -139,10 +147,10 @@ open class AnkiDroidApp :
         Timber.i("Timber config: $logType")
 
         // analytics after ACRA, they both install UncaughtExceptionHandlers but Analytics chains while ACRA does not
-        UsageAnalytics.initialize(this)
-        if (BuildConfig.DEBUG) {
-            UsageAnalytics.setDryRun(true)
-        }
+        // UsageAnalytics.initialize(this)
+        // if (BuildConfig.DEBUG) {
+        //    UsageAnalytics.setDryRun(true)
+        // }
 
         // Last in the UncaughtExceptionHandlers chain is our filter service
         ThrowableFilterService.initialize()
