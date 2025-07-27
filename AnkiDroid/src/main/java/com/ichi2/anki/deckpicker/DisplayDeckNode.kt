@@ -42,6 +42,7 @@ data class DisplayDeckNode private constructor(
     val newCount: Int,
     val lrnCount: Int,
     val revCount: Int,
+    val revRemain: Int,
     val isSelected: Boolean,
 ) {
     // DeckNode is mutable, so use a lateinit var so '==' doesn't include it in the comparison
@@ -69,6 +70,7 @@ data class DisplayDeckNode private constructor(
                 newCount = node.newCount,
                 lrnCount = node.lrnCount,
                 revCount = node.revCount,
+                revRemain = node.revRemain,
                 isSelected = node.did == selectedDeckId,
             ).apply {
                 this.deckNode = node
