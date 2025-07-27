@@ -35,7 +35,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import anki.collection.OpChanges
 import com.ichi2.anki.CrashReportService.sendExceptionReport
-import com.ichi2.anki.analytics.UsageAnalytics
 import com.ichi2.anki.browser.SharedPreferencesLastDeckIdRepository
 import com.ichi2.anki.common.annotations.LegacyNotifications
 import com.ichi2.anki.common.annotations.NeedsTest
@@ -142,10 +141,10 @@ open class AnkiDroidApp :
         Timber.i("Timber config: $logType")
 
         // analytics after ACRA, they both install UncaughtExceptionHandlers but Analytics chains while ACRA does not
-        UsageAnalytics.initialize(this)
-        if (BuildConfig.DEBUG) {
-            UsageAnalytics.setDryRun(true)
-        }
+        // UsageAnalytics.initialize(this)
+        // if (BuildConfig.DEBUG) {
+        //    UsageAnalytics.setDryRun(true)
+        // }
 
         // Last in the UncaughtExceptionHandlers chain is our filter service
         ThrowableFilterService.initialize()
