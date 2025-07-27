@@ -1824,9 +1824,9 @@ open class DeckPicker :
         } else if (skip < 2 && !InitialActivity.isLatestVersion(preferences)) {
             Timber.i("AnkiDroid is being updated and a collection already exists.")
             // The user might appreciate us now, see if they will help us get better?
-            if (!preferences.contains(AnkiDroidUsageAnalytics.ANALYTICS_OPTIN_KEY)) {
-                displayAnalyticsOptInDialog()
-            }
+            // if (!preferences.contains(AnkiDroidUsageAnalytics.ANALYTICS_OPTIN_KEY)) {
+            //    displayAnalyticsOptInDialog()
+            // }
 
             // For upgrades, we check if we are upgrading
             // to a version that contains additions to the database integrity check routine that we would

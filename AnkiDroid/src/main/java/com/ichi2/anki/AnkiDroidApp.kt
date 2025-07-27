@@ -198,7 +198,8 @@ open class AnkiDroidApp :
         Timber.i("Timber config: $logType")
 
         // analytics after ACRA, they both install UncaughtExceptionHandlers but Analytics chains while ACRA does not
-        initializeAnalytics()
+        //UsageAnalytics.initialize(this)
+
         // Last in the UncaughtExceptionHandlers chain is our filter service
         ThrowableFilterService.initialize()
 

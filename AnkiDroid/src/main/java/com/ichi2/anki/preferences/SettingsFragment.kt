@@ -50,13 +50,13 @@ abstract class SettingsFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        if (key !in AnkiDroidUsageAnalytics.reportablePreferences) {
-            return
-        }
-        if (key != null) {
-            val valueToReport = getPreferenceReportableValue(sharedPreferences.get(key))
-            Analytics.send(AnalyticsEvent.SettingChanged(key, valueToReport))
-        }
+        //if (key !in AnkiDroidUsageAnalytics.reportablePreferences) {
+        //    return
+        //}
+        //if (key != null) {
+        //    val valueToReport = getPreferenceReportableValue(sharedPreferences.get(key))
+        //    Analytics.send(AnalyticsEvent.SettingChanged(key, valueToReport))
+        //}
     }
 
     override fun onCreateView(
