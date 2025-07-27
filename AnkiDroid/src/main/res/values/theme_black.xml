@@ -40,7 +40,7 @@
         <item name="learnCountColor">@color/material_red_400</item>
         <item name="reviewCountColor">@color/material_green_400</item>
         <item name="buryCountColor">@color/disabled_gray_dark</item>
-        <item name="zeroCountColor">#202020</item>
+        <item name="zeroCountColor">#404040</item>
         <!-- Study Screen colors -->
         <item name="showAnswerButtonBackground">#0c1215</item>
         <item name="showAnswerColor">@color/theme_black_primary</item>
