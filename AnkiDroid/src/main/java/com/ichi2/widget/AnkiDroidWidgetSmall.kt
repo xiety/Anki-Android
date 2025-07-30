@@ -81,7 +81,7 @@ class AnkiDroidWidgetSmall : AnalyticsWidgetProvider() {
 
     class UpdateService : Service() {
         /** The cached number of total due cards.  */
-        private var dueCardsCount = 0
+        // private var dueCardsCount = 0
 
         fun doUpdate(context: Context) {
             val appWidgetManager = getAppWidgetManager(context) ?: return
@@ -109,8 +109,9 @@ class AnkiDroidWidgetSmall : AnalyticsWidgetProvider() {
             val updateViews = RemoteViews(context.packageName, widgetSmallLayout)
             val mounted = AnkiDroidApp.isSdCardMounted
             if (!mounted) {
-                updateViews.setViewVisibility(R.id.widget_due, View.INVISIBLE)
-                updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
                 updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.GONE)
                 if (mountReceiver == null) {
                     mountReceiver =
@@ -144,55 +145,39 @@ class AnkiDroidWidgetSmall : AnalyticsWidgetProvider() {
             } else {
                 // Compute the total number of cards due.
                 val counts = WidgetStatus.fetchSmall(context)
-                dueCardsCount = counts[0]
-                // The cached estimated reviewing time.
-                val eta = counts[1]
-                val etaIcon: String = "⏱"
-                if (dueCardsCount <= 0) {
-                    if (dueCardsCount == 0) {
-                        updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.VISIBLE)
-                    } else {
-                        updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.INVISIBLE)
-                        updateViews.setViewVisibility(R.id.widget_due, View.VISIBLE)
-                        updateViews.setTextViewText(R.id.widget_due, dueCardsCount.toString())
-                        updateViews.setContentDescription(
-                            R.id.widget_due,
-                            context.resources.getQuantityString(R.plurals.widget_cards_due, dueCardsCount, dueCardsCount),
-                        )
-                    }
-                    if (eta <= 0 || dueCardsCount <= 0) {
-                        updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
-                    } else {
-                        updateViews.setViewVisibility(R.id.widget_eta, View.VISIBLE)
-                        if (Build.VERSION.SDK_INT >= 31) {
-                            updateViews.setTextViewText(R.id.widget_eta, "$etaIcon$eta")
-                        } else {
-                            updateViews.setTextViewText(R.id.widget_eta, "$eta")
-                        }
-                        updateViews.setContentDescription(
-                            R.id.widget_eta,
-                            context.resources.getQuantityString(R.plurals.widget_eta, eta, eta),
-                        )
-                    }
-                    updateViews.setViewVisibility(R.id.widget_due, View.INVISIBLE)
+                val newCount = counts[0]
+                val lrnCount = counts[1]
+                val revCount = counts[2]
+                val totalDue = newCount + lrnCount + revCount
+
+                if (totalDue == 0) {
+                    updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.VISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
                 } else {
                     updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.INVISIBLE)
-                    updateViews.setViewVisibility(R.id.widget_due, View.VISIBLE)
-                    updateViews.setTextViewText(R.id.widget_due, dueCardsCount.toString())
-                    updateViews.setContentDescription(
-                        R.id.widget_due,
-                        context.resources.getQuantityString(R.plurals.widget_cards_due, dueCardsCount, dueCardsCount),
-                    )
-                }
-                if (eta <= 0 || dueCardsCount <= 0) {
-                    updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
-                } else {
-                    updateViews.setViewVisibility(R.id.widget_eta, View.VISIBLE)
-                    updateViews.setTextViewText(R.id.widget_eta, "$etaIcon$eta")
-                    updateViews.setContentDescription(
-                        R.id.widget_eta,
-                        context.resources.getQuantityString(R.plurals.widget_eta, eta, eta),
-                    )
+
+                    if (newCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_new, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_new, newCount.toString())
+                    } else {
+                        updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                    }
+
+                    if (lrnCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_lrn, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_lrn, lrnCount.toString())
+                    } else {
+                        updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                    }
+
+                    if (revCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_rev, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_rev, revCount.toString())
+                    } else {
+                        updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
+                    }
                 }
             }
 

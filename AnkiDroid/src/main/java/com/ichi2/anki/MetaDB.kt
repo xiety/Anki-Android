@@ -82,8 +82,9 @@ object MetaDB {
         metaDb.execSQL(
             """CREATE TABLE IF NOT EXISTS smallWidgetStatus (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            due INTEGER NOT NULL,
-            eta INTEGER NOT NULL
+            newCount INTEGER NOT NULL,
+            lrnCount INTEGER NOT NULL,
+            revCount INTEGER NOT NULL
             )""",
         )
         metaDb.execSQL(
@@ -628,7 +629,7 @@ object MetaDB {
             metaDb!!
                 .query(
                     "smallWidgetStatus",
-                    arrayOf("due", "eta"),
+                    arrayOf("newCount", "lrnCount", "revCount"),
                     null,
                     null,
                     null,
@@ -636,20 +637,20 @@ object MetaDB {
                     null,
                 ).use { cursor ->
                     if (cursor.moveToNext()) {
-                        return intArrayOf(cursor.getInt(0), cursor.getInt(1))
+                        return intArrayOf(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2))
                     }
                 }
         } catch (e: SQLiteException) {
             Timber.e(e, "Error while querying widgetStatus")
         }
-        return intArrayOf(0, 0)
+        return intArrayOf(0, 0, 0)
     }
 
     fun getNotificationStatus(context: Context): Int {
         openDBIfClosed(context)
         val due = 0
         try {
-            metaDb!!.query("smallWidgetStatus", arrayOf("due"), null, null, null, null, null).use { cursor ->
+            metaDb!!.query("smallWidgetStatus", arrayOf("revCount"), null, null, null, null, null).use { cursor ->
                 if (cursor.moveToFirst()) {
                     return cursor.getInt(0)
                 }
@@ -671,8 +672,8 @@ object MetaDB {
                 // First clear all the existing content.
                 metaDb.execSQL("DELETE FROM smallWidgetStatus")
                 metaDb.execSQL(
-                    "INSERT INTO smallWidgetStatus(due, eta) VALUES (?, ?)",
-                    arrayOf<Any>(status.due, status.eta),
+                    "INSERT INTO smallWidgetStatus(newCount, lrnCount, revCount) VALUES (?, ?, ?)",
+                    arrayOf<Any>(status.newCount, status.lrnCount, status.revCount),
                 )
             }
         } catch (e: IllegalStateException) {
