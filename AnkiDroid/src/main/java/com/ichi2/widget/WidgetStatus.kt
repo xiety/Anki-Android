@@ -29,8 +29,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 data class SmallWidgetStatus(
-    var due: Int,
-    var eta: Int,
+    var newCount: Int,
+    var lrnCount: Int,
+    var revCount: Int,
 )
 
 /**
@@ -38,7 +39,7 @@ data class SmallWidgetStatus(
  */
 object WidgetStatus {
     private var enabled = false
-    private var status = SmallWidgetStatus(0, 0)
+    private var status = SmallWidgetStatus(0, 0, 0)
     private var updateJob: Job? = null
 
     /**
@@ -101,8 +102,7 @@ object WidgetStatus {
                     total.addLrn(node.lrnCount)
                     total.addRev(node.revCount)
                 }
-                val eta = sched.eta(total, false)
-                SmallWidgetStatus(total.count(), eta)
+                SmallWidgetStatus(total.new, total.lrn, total.rev)
             }
     }
 }
