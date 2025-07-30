@@ -33,8 +33,9 @@ import timber.log.Timber
  * @param eta The estimated time to review
  */
 data class SmallWidgetStatus(
-    val dueCardsCount: Int,
-    val eta: Int,
+    var newCount: Int,
+    var lrnCount: Int,
+    var revCount: Int,
 )
 
 /**
@@ -111,7 +112,6 @@ object WidgetStatus {
     private suspend fun querySmallWidgetStatus(): SmallWidgetStatus =
         withCol {
             val total = sched.allDecksCounts()
-            val eta = sched.eta(total, false)
-            SmallWidgetStatus(total.count(), eta)
+            SmallWidgetStatus(total.new, total.lrn, total.rev)
         }
 }

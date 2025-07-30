@@ -34,14 +34,15 @@
         android:src="@drawable/ic_anki_dynamic_finish"
         android:visibility="gone" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/ankidroid_widget_text_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
-        android:orientation="horizontal"
-        android:padding="4dip">
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:padding="2dip">
 
         <!-- 7366: Using FixedTextView breaks the widget
         Error inflating RemoteViews : android.view.InflateException: Binary XML file line #30:
@@ -49,35 +50,68 @@
 
         https://stackoverflow.com/a/6150129/-->
         <TextView
-            android:id="@+id/widget_due"
+            android:id="@+id/widget_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="24sp"
-            android:minHeight="24sp"
-            android:padding="3sp"
+            android:minWidth="20sp"
+            android:minHeight="20sp"
+            android:padding="1sp"
             android:background="@drawable/circle_background"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="@android:color/system_accent1_0"
-            android:textSize="18sp"
+            android:textColor="@color/material_indigo_200"
+            android:textSize="12sp"
+            android:textStyle="bold"
             android:visibility="invisible"
+            android:shadowColor="#99FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="1"
+            tools:text="10"
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/widget_eta"
+            android:id="@+id/widget_lrn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="false"
+            android:layout_marginTop="1dp"
+            android:minWidth="20sp"
+            android:minHeight="20sp"
+            android:padding="1sp"
             android:background="@drawable/circle_background"
             android:gravity="center"
-            android:padding="3sp"
             android:singleLine="true"
-            android:minWidth="24sp"
-            android:minHeight="24sp"
-            android:textColor="@android:color/system_accent1_0"
-            android:textSize="14sp"
+            android:textColor="@color/material_red_500"
+            android:textSize="12sp"
+            android:textStyle="bold"
             android:visibility="invisible"
+            android:shadowColor="#99FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="1"
+            tools:text="5"
             tools:visibility="visible" />
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/widget_rev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:minWidth="20sp"
+            android:minHeight="20sp"
+            android:padding="1sp"
+            android:background="@drawable/circle_background"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/material_green_500"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:shadowColor="#99FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="1"
+            tools:text="20"
+            tools:visibility="visible" />
+    </LinearLayout>
 </FrameLayout>
