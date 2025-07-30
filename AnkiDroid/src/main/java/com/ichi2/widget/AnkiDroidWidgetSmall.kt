@@ -112,8 +112,9 @@ class AnkiDroidWidgetSmall : AnalyticsWidgetProvider() {
             val updateViews = RemoteViews(context.packageName, widgetSmallLayout)
             val mounted = AnkiDroidApp.isSdCardMounted
             if (!mounted) {
-                updateViews.setViewVisibility(R.id.widget_due, View.INVISIBLE)
-                updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
                 updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.GONE)
                 if (mountReceiver == null) {
                     mountReceiver =
@@ -146,30 +147,36 @@ class AnkiDroidWidgetSmall : AnalyticsWidgetProvider() {
                 }
             } else {
                 // Compute the total number of cards due.
-                val (dueCardsCount, eta) = WidgetStatus.fetchSmall(context)
+                val (newCount, lrnCount, revCount) = WidgetStatus.fetchSmall(context)
+                val dueCardsCount = newCount + lrnCount + revCount
+
                 if (dueCardsCount == 0) {
                     updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.VISIBLE)
-                    updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
-                    updateViews.setViewVisibility(R.id.widget_due, View.INVISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                    updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
                 } else {
                     updateViews.setViewVisibility(R.id.ankidroid_widget_small_finish_layout, View.INVISIBLE)
-                    updateViews.setViewVisibility(R.id.widget_due, View.VISIBLE)
-                    updateViews.setTextViewText(R.id.widget_due, dueCardsCount.toString())
-                    updateViews.setContentDescription(
-                        R.id.widget_due,
-                        context.resources.getQuantityString(R.plurals.widget_cards_due, dueCardsCount, dueCardsCount),
-                    )
 
-                    if (eta <= 0) {
-                        updateViews.setViewVisibility(R.id.widget_eta, View.INVISIBLE)
+                    if (newCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_new, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_new, newCount.toString())
                     } else {
-                        updateViews.setViewVisibility(R.id.widget_eta, View.VISIBLE)
-                        val etaText = if (Build.VERSION.SDK_INT >= 31) "⏱$eta" else "$eta"
-                        updateViews.setTextViewText(R.id.widget_eta, etaText)
-                        updateViews.setContentDescription(
-                            R.id.widget_eta,
-                            context.resources.getQuantityString(R.plurals.widget_eta, eta, eta),
-                        )
+                        updateViews.setViewVisibility(R.id.widget_new, View.INVISIBLE)
+                    }
+
+                    if (lrnCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_lrn, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_lrn, lrnCount.toString())
+                    } else {
+                        updateViews.setViewVisibility(R.id.widget_lrn, View.INVISIBLE)
+                    }
+
+                    if (revCount > 0) {
+                        updateViews.setViewVisibility(R.id.widget_rev, View.VISIBLE)
+                        updateViews.setTextViewText(R.id.widget_rev, revCount.toString())
+                    } else {
+                        updateViews.setViewVisibility(R.id.widget_rev, View.INVISIBLE)
                     }
                 }
             }
