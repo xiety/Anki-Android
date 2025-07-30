@@ -89,7 +89,6 @@ object WidgetStatus {
     private suspend fun querySmallWidgetStatus(): SmallWidgetStatus =
         withCol {
             val total = sched.allDecksCounts()
-            val eta = sched.eta(total, false)
-            SmallWidgetStatus(total.count(), eta)
+            SmallWidgetStatus(total.new, total.lrn, total.rev)
         }
 }
