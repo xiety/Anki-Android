@@ -120,6 +120,10 @@ data class DeckNode(
      */
     fun totalCardsDue(): Int = children.sumOf { it.newCount + it.revCount + it.lrnCount }
 
+    data class DueCounts(val new: Int, val lrn: Int, val rev: Int)
+
+    fun totalDueCounts(): DueCounts = DueCounts(children.sumOf { it.newCount }, children.sumOf { it.revCount }, children.sumOf { it.lrnCount })
+
     /**
      * The node with [did] [deckId], if it is either this node or a descendant.
      */

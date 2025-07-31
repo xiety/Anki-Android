@@ -160,7 +160,7 @@ class DeckPickerViewModel :
     val flowOfCardsDue =
         combine(flowOfDeckDueTree, flowOfDeckListInInitialState) { tree, inInitialState ->
             if (tree == null || inInitialState != false) return@combine null
-            tree.totalCardsDue()
+            tree.totalDueCounts()
         }
 
     /** "Studied N cards in 0 seconds today */
