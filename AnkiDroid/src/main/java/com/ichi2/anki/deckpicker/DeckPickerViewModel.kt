@@ -168,10 +168,12 @@ class DeckPickerViewModel :
             tree.onlyHasDefaultDeck() && noCards
         }.stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
 
+    data class DueCounts(val new: Int, val lrn: Int, val rev: Int)
+
     val flowOfCardsDue =
         combine(flowOfDeckDueTree, flowOfDeckListInInitialState) { tree, inInitialState ->
             if (tree == null || inInitialState != false) return@combine null
-            tree.newCount + tree.revCount + tree.lrnCount
+            DueCounts(tree.newCount, tree.lrnCount, tree.revCount)
         }
 
     /** "Studied N cards in 0 seconds today */

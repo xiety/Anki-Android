@@ -754,14 +754,19 @@ open class DeckPicker :
             binding.resizingDivider?.isVisible = isVisible
         }
 
-        fun onCardsDueChanged(dueCount: Int?) {
+        fun onCardsDueChanged(dueCount: DeckPickerViewModel.DueCounts?) {
             if (dueCount == null) {
                 supportActionBar?.subtitle = null
                 return
             }
 
             supportActionBar?.apply {
-                subtitle = if (dueCount == 0) null else resources.getQuantityString(R.plurals.widget_cards_due, dueCount, dueCount)
+                subtitle =
+                    if (dueCount.new + dueCount.lrn + dueCount.rev == 0) {
+                        null
+                    } else {
+                        "${dueCount.new}/${dueCount.lrn}/${dueCount.rev}"
+                    }
                 val toolbar = findViewById<Toolbar>(R.id.toolbar)
                 TooltipCompat.setTooltipText(toolbar, toolbar.subtitle)
             }
