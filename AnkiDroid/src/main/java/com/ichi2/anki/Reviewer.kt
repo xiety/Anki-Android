@@ -1086,14 +1086,18 @@ open class Reviewer :
         val background = getBackgroundColors(this)
         val textColor = getTextColors(this)
         easeButton1!!.setVisibility(View.VISIBLE)
+        easeButton1right!!.setVisibility(View.VISIBLE)
         easeButton1!!.setColor(background[0])
+        easeButton1right!!.setColor(background[0])
         easeButton4!!.setColor(background[3])
+        easeButton4right!!.setColor(background[3])
         // Ease 2 is "hard"
         easeButton2!!.setup(background[1], textColor[1], R.string.ease_button_hard)
         easeButton2!!.requestFocus()
         // Ease 3 is good
         easeButton3!!.setup(background[2], textColor[2], R.string.ease_button_good)
         easeButton4!!.setVisibility(View.VISIBLE)
+        easeButton4right!!.setVisibility(View.VISIBLE)
         easeButton3!!.requestFocus()
 
         // Show next review time
@@ -1102,9 +1106,11 @@ open class Reviewer :
             launchCatchingTask {
                 val labels = withCol { sched.describeNextStates(state.states) }
                 easeButton1!!.nextTime = labels[0]
+                easeButton1right!!.nextTime = labels[0]
                 easeButton2!!.nextTime = labels[1]
                 easeButton3!!.nextTime = labels[2]
                 easeButton4!!.nextTime = labels[3]
+                easeButton4right!!.nextTime = labels[3]
             }
         }
     }
