@@ -2320,7 +2320,7 @@ open class DeckPicker :
         runCatchingKotlin {
             val dueCount = tree.newCount + tree.revCount + tree.lrnCount
             supportActionBar?.apply {
-                subtitle = if (dueCount == 0) null else resources.getQuantityString(R.plurals.widget_cards_due, dueCount, dueCount)
+                subtitle = if (dueCount == 0) null else "${tree.newCount}/${tree.lrnCount}/${tree.revCount}"
                 val toolbar = findViewById<Toolbar>(R.id.toolbar)
                 TooltipCompat.setTooltipText(toolbar, toolbar.subtitle)
             }
