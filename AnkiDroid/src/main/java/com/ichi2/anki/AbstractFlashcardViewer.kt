@@ -249,9 +249,11 @@ abstract class AbstractFlashcardViewer :
     private var easeButtonsLayout: LinearLayout? = null
 
     internal var easeButton1: EaseButton? = null
+    internal var easeButton1right: EaseButton? = null
     internal var easeButton2: EaseButton? = null
     internal var easeButton3: EaseButton? = null
     internal var easeButton4: EaseButton? = null
+    internal var easeButton4right: EaseButton? = null
     protected var topBarLayout: RelativeLayout? = null
     private var previousAnswerIndicator: PreviousAnswerIndicator? = null
 
@@ -422,7 +424,7 @@ abstract class AbstractFlashcardViewer :
                     lastClickTime = elapsedRealTime
                     automaticAnswer.onSelectEase()
                     when (view.id) {
-                        R.id.flashcard_layout_ease1 -> {
+                        R.id.flashcard_layout_ease1, R.id.flashcard_layout_ease1_right -> {
                             Timber.i("AbstractFlashcardViewer:: Ease_1 pressed")
                             answerCard(Rating.AGAIN)
                         }
@@ -437,7 +439,7 @@ abstract class AbstractFlashcardViewer :
                             answerCard(Rating.GOOD)
                         }
 
-                        R.id.flashcard_layout_ease4 -> {
+                        R.id.flashcard_layout_ease4, R.id.flashcard_layout_ease4_right -> {
                             Timber.i("AbstractFlashcardViewer:: Ease_4 pressed")
                             answerCard(Rating.EASY)
                         }
@@ -918,6 +920,13 @@ abstract class AbstractFlashcardViewer :
                 findViewById(R.id.ease1),
                 findViewById(R.id.nextTime1),
             ).apply { setListeners(easeHandler) }
+        easeButton1right =
+            EaseButton(
+                Rating.AGAIN,
+                findViewById(R.id.flashcard_layout_ease1_right),
+                findViewById(R.id.ease1_right),
+                findViewById(R.id.nextTime1_right),
+            ).apply { setListeners(easeHandler) }
         easeButton2 =
             EaseButton(
                 Rating.HARD,
@@ -939,11 +948,20 @@ abstract class AbstractFlashcardViewer :
                 findViewById(R.id.ease4),
                 findViewById(R.id.nextTime4),
             ).apply { setListeners(easeHandler) }
+        easeButton4right =
+            EaseButton(
+                Rating.EASY,
+                findViewById(R.id.flashcard_layout_ease4_right),
+                findViewById(R.id.ease4_right),
+                findViewById(R.id.nextTime4_right),
+            ).apply { setListeners(easeHandler) }
         if (!showNextReviewTime) {
             easeButton1!!.hideNextReviewTime()
+            easeButton1right!!.hideNextReviewTime()
             easeButton2!!.hideNextReviewTime()
             easeButton3!!.hideNextReviewTime()
             easeButton4!!.hideNextReviewTime()
+            easeButton4right!!.hideNextReviewTime()
         }
         flipCardLayout = findViewById(R.id.flashcard_layout_flip)
         flipCardLayout?.let { layout ->
@@ -986,9 +1004,11 @@ abstract class AbstractFlashcardViewer :
             val params = flipCardLayout!!.layoutParams
             params.height = params.height * relativeButtonSize / 100
             easeButton1!!.setButtonScale(relativeButtonSize)
+            easeButton1right!!.setButtonScale(relativeButtonSize)
             easeButton2!!.setButtonScale(relativeButtonSize)
             easeButton3!!.setButtonScale(relativeButtonSize)
             easeButton4!!.setButtonScale(relativeButtonSize)
+            easeButton4right!!.setButtonScale(relativeButtonSize)
             buttonHeightSet = true
         }
         initialFlipCardHeight = flipCardLayout!!.layoutParams.height
@@ -1146,24 +1166,24 @@ abstract class AbstractFlashcardViewer :
     protected open fun displayAnswerBottomBar() {
         flipCardLayout!!.isClickable = false
         easeButtonsLayout!!.visibility = View.VISIBLE
-        if (largeAnswerButtons) {
-            easeButtonsLayout!!.orientation = LinearLayout.VERTICAL
-            easeButtonsLayout!!.removeAllViewsInLayout()
-            easeButton1!!.detachFromParent()
-            easeButton2!!.detachFromParent()
-            easeButton3!!.detachFromParent()
-            easeButton4!!.detachFromParent()
-            val row1 = LinearLayout(baseContext)
-            row1.orientation = LinearLayout.HORIZONTAL
-            val row2 = LinearLayout(baseContext)
-            row2.orientation = LinearLayout.HORIZONTAL
-            easeButton2!!.addTo(row1)
-            easeButton4!!.addTo(row1)
-            easeButton1!!.addTo(row2)
-            easeButton3!!.addTo(row2)
-            easeButtonsLayout!!.addView(row1)
-            easeButtonsLayout!!.addView(row2)
-        }
+        // if (largeAnswerButtons) {
+        //    easeButtonsLayout!!.orientation = LinearLayout.VERTICAL
+        //    easeButtonsLayout!!.removeAllViewsInLayout()
+        //    easeButton1!!.detachFromParent()
+        //    easeButton2!!.detachFromParent()
+        //    easeButton3!!.detachFromParent()
+        //    easeButton4!!.detachFromParent()
+        //    val row1 = LinearLayout(baseContext)
+        //    row1.orientation = LinearLayout.HORIZONTAL
+        //    val row2 = LinearLayout(baseContext)
+        //    row2.orientation = LinearLayout.HORIZONTAL
+        //    easeButton2!!.addTo(row1)
+        //    easeButton4!!.addTo(row1)
+        //    easeButton1!!.addTo(row2)
+        //    easeButton3!!.addTo(row2)
+        //    easeButtonsLayout!!.addView(row1)
+        //    easeButtonsLayout!!.addView(row2)
+        // }
         val after = Runnable { flipCardLayout!!.visibility = View.GONE }
 
         // hide "Show Answer" button
@@ -1200,9 +1220,11 @@ abstract class AbstractFlashcardViewer :
     private fun actualHideEaseButtons() {
         easeButtonsLayout?.visibility = View.GONE
         easeButton1?.hide()
+        easeButton1right?.hide()
         easeButton2?.hide()
         easeButton3?.hide()
         easeButton4?.hide()
+        easeButton4right?.hide()
     }
 
     /**
@@ -1596,9 +1618,11 @@ abstract class AbstractFlashcardViewer :
         cardFrame!!.isEnabled = true
         flipCardLayout?.isEnabled = true
         easeButton1?.unblockBasedOnEase(currentEase)
+        easeButton1right?.unblockBasedOnEase(currentEase)
         easeButton2?.unblockBasedOnEase(currentEase)
         easeButton3?.unblockBasedOnEase(currentEase)
         easeButton4?.unblockBasedOnEase(currentEase)
+        easeButton4right?.unblockBasedOnEase(currentEase)
         if (typeAnswer?.validForEditText() == true) {
             answerField?.isEnabled = true
         }
