@@ -28,6 +28,7 @@
     <issue id="StringFormatMatches" severity="fatal" />
     <issue id="StringFormatInvalid" severity="fatal" />
     <issue id="UnusedResources" severity="fatal">
+        <ignore path="res/values/08-widget.xml" />
         <ignore path="res/values/12-dont-translate.xml" />
         <!-- Ignore all translations except values - CrowdIn will handle deletions -->
         <!-- We only need to handle -af and all others are implicitly ignored -->
