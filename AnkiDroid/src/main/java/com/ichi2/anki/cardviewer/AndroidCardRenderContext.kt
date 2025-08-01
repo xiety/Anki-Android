@@ -21,6 +21,7 @@ import androidx.annotation.CheckResult
 import anki.config.ConfigKey
 import com.ichi2.anki.libanki.Card
 import com.ichi2.anki.libanki.CardOrdinal
+import com.ichi2.anki.libanki.CardType
 import com.ichi2.anki.libanki.Collection
 import com.ichi2.anki.libanki.TemplateManager.TemplateRenderContext.TemplateRenderOutput
 import com.ichi2.anki.libanki.template.MathJax
@@ -56,7 +57,7 @@ class AndroidCardRenderContext(
         // produces either an <input> or <span>...</span> to denote typed input
         content = filterTypeAnswer(content, side)
         // wraps content in <div id="qa">
-        content = enrichWithQADiv(content)
+        content = enrichWithQADiv(content, card)
         // expands [anki:q:1] to a play button
         content = expandSounds(content, card.renderOutput(col), col)
         // fixes an Android bug where font-weight:600 does not display
@@ -94,12 +95,23 @@ class AndroidCardRenderContext(
      * @param content The content to surround with tags.
      * @return The enriched content
      */
-    private fun enrichWithQADiv(content: String) =
-        buildString {
-            append("""<div id="qa">""")
-            append(content)
-            append("</div>")
-        }
+    private fun enrichWithQADiv(
+        content: String,
+        card: Card,
+    ) = buildString {
+        val cls =
+            when (card.type) {
+                CardType.New -> "card-type-new"
+                CardType.Lrn -> "card-type-lrn"
+                CardType.Rev -> "card-type-rev"
+                CardType.Relearning -> "card-type-relearning"
+                else -> ""
+            }
+        append("""<div id="qa_title" class="$cls"></div>""")
+        append("""<div id="qa">""")
+        append(content)
+        append("</div>")
+    }
 
     private fun filterTypeAnswer(
         content: String,

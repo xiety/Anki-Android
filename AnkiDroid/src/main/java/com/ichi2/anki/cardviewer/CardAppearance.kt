@@ -40,6 +40,12 @@ class CardAppearance(
         if (imageZoom != 100) {
             style.append("img { zoom: ${imageZoom / 100.0} }\n")
         }
+
+        style.append("#qa_title { height: 3px; margin-bottom: 3px; }\n")
+        style.append("#qa_title.card-type-new { background-color: blue; }\n")
+        style.append("#qa_title.card-type-lrn { background-color: red; }\n")
+        style.append("#qa_title.card-type-relearning { background-color: red; }\n")
+        style.append("#qa_title.card-type-rev { background-color: green; }\n")
     }
 
     @CheckResult
