@@ -784,14 +784,6 @@ open class DeckPicker :
             )
         }
 
-        fun onFocusedDeckChanged(deckId: DeckId?) {
-            val position = deckId?.let { viewModel.findDeckPosition(it) } ?: 0
-            // HACK: a small delay is required before scrolling works
-            deckPickerBinding.decks.postDelayed({
-                decksLayoutManager.scrollToPositionWithOffset(position, deckPickerBinding.decks.height / 2)
-            }, 10)
-        }
-
         fun onDecksReloaded(param: Unit) {
             hideProgressBar()
         }
@@ -848,7 +840,6 @@ open class DeckPicker :
         viewModel.flowOfCardsDue.launchCollectionInLifecycleScope(::onCardsDueChanged)
         viewModel.flowOfCollectionHasNoCards.launchCollectionInLifecycleScope(::onStudyOptionsVisibilityChanged)
         viewModel.flowOfDeckList.launchCollectionInLifecycleScope(::onDeckListChanged)
-        viewModel.flowOfFocusedDeck.launchCollectionInLifecycleScope(::onFocusedDeckChanged)
         viewModel.flowOfResizingDividerVisible.launchCollectionInLifecycleScope(::onResizingDividerVisibilityChanged)
         viewModel.flowOfDecksReloaded.launchCollectionInLifecycleScope(::onDecksReloaded)
         viewModel.flowOfStartupResponse.filterNotNull().launchCollectionInLifecycleScope(::onStartupResponse)
