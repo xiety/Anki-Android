@@ -89,7 +89,6 @@ import com.ichi2.anki.InitialActivity.StartupFailure.StorageUndecided
 import com.ichi2.anki.StudyOptionsFragment.Companion.registerStudyOptionsAddEditReminderHandler
 import com.ichi2.anki.StudyOptionsFragment.Companion.registerStudyOptionsStudyHandler
 import com.ichi2.anki.account.AccountActivity
-import com.ichi2.anki.analytics.AnkiDroidUsageAnalytics
 import com.ichi2.anki.android.back.exitViaDoubleTapBackCallback
 import com.ichi2.anki.android.input.ShortcutGroup
 import com.ichi2.anki.android.input.shortcut
@@ -187,7 +186,6 @@ import com.ichi2.anki.utils.ShortcutUtils
 import com.ichi2.anki.utils.ext.dismissAllDialogFragments
 import com.ichi2.anki.utils.ext.doOnScrolled
 import com.ichi2.anki.utils.ext.launchCollectionInLifecycleScope
-import com.ichi2.anki.utils.ext.positionIsVisible
 import com.ichi2.anki.utils.ext.setFragmentResultListener
 import com.ichi2.anki.utils.ext.setImageDrawableSafe
 import com.ichi2.anki.utils.ext.showDialogFragment
@@ -884,17 +882,6 @@ open class DeckPicker :
 
         fun onFocusedDeckChanged(deckId: DeckId?) {
             if (deckId != null) tryShowStudyOptionsPanel()
-            val position = deckId?.let { viewModel.findDeckPosition(it) } ?: 0
-
-            // Skip centering if the deck is already on screen.
-            // Scrolling during a tap animation causes deck labels to overlap on older devices.
-            if (decksLayoutManager.positionIsVisible(position)) {
-                return
-            }
-            // HACK: a small delay is required before scrolling works
-            deckPickerBinding.decks.postDelayed({
-                decksLayoutManager.scrollToPositionWithOffset(position, deckPickerBinding.decks.height / 2)
-            }, 10)
         }
 
         fun onDecksReloaded(param: Unit) {
